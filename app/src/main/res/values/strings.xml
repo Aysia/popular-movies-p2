@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <!-- Grid Strings -->
+    <string name="movies_grid_text">Choose a movie for more information!</string>
+    <string name="settings_popular_options">popular</string>
+    <string name="settings_popular_title">Most Popular</string>
+    <string name="settings_rated_options">top_rated</string>
+    <string name="settings_rated_title">Highest Rated</string>
+
+    <!-- Menu Strings -->
+    <string name="action_settings">Settings</string>
+    <string name="pref_sort_key">sort</string>
+    <string name="pref_sort_text">Sort By</string>
+    <string name="pref_sort_default">popular</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_plot_view">Description</string>
+
+
+    <string name="title_trailers">Trailers</string>
+    <string name="title_reviews">Reviews</string>
+
+    <string name="favorite_default">false</string>
+
+    <string name="empty_view_text">Please Select a Movie to begin</string>
+    <string name="empty_trailer_tex">No Trailers Found</string>
+    <string name="empty_review_text">No Reviews Found</string>
+
+
+</resources>
