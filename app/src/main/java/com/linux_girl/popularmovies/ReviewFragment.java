@@ -11,6 +11,8 @@ import android.widget.ListView;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import static android.view.View.GONE;
+
 /**
  * Created by Lani on 9/20/2016.
  */
@@ -67,6 +69,9 @@ public class ReviewFragment extends Fragment implements ReviewTask.TaskListener 
 
     public void insertReviews(ArrayList<Reviews> reviews) {
 
+        if(reviews == null || reviews.size() == 0) {
+            rootView.setVisibility(GONE);
+        }
         /**
          * Create an {@link TrailerAdapter}, whose data source is a list of
          * {@link Trailers}. The adapter knows how to create list items for each

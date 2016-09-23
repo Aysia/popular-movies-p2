@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import static android.view.View.GONE;
 import static com.linux_girl.popularmovies.MainFragment.adapter;
 
 public class TrailerFragment extends Fragment implements TrailerTask.TaskListener {
@@ -66,6 +67,10 @@ public class TrailerFragment extends Fragment implements TrailerTask.TaskListene
     }
 
     public void insertTrailers(final ArrayList<Trailers> trailers) {
+
+        if(trailers == null || trailers.size() == 0) {
+            rootView.setVisibility(GONE);
+        }
 
         trailerAdapter = new TrailerAdapter(getContext(), trailers);
 

@@ -70,7 +70,7 @@
         android:layout_alignBottom="@id/movie_title"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="-32dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="48dp"
         android:clickable="true"
         android:src="@drawable/ic_favorite_border_black_24dp" />
 
