@@ -101,7 +101,12 @@ public class DetailFragment extends Fragment {
                 if(dbHelper.isFavorite(movie.movieId)) {
                     dbHelper.unFavorite(movie.movieId);
                 } else {
+                    //TODO: Add Movie Poster Blob bitmap and backdrop
                     values.put(DatabaseContract.Favorites.FMOVIE_ID, movie.movieId);
+                    values.put(DatabaseContract.Favorites.MOVIE_TITLE, movie.movieTitle);
+                    values.put(DatabaseContract.Favorites.MOVIE_PLOT, movie.moviePlot);
+                    values.put(DatabaseContract.Favorites.MOVIE_RATING, movie.userRating);
+                    values.put(DatabaseContract.Favorites.RELEASE_DATE, movie.releaseDate);
                     dbHelper.addFavorite(values);
                 }
                 refreshFragment();

@@ -77,7 +77,7 @@ public class TrailerFragment extends Fragment implements TrailerTask.TaskListene
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Trailers currentTrailer = trailerAdapter.getItem(position);
-                watchYoutubeVideo(currentTrailer.mKey);
+                watchYoutubeVideo(currentTrailer != null ? currentTrailer.mKey : null);
             }
         });
     }

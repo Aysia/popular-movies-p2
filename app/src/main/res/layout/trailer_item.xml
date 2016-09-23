@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="165dp"
+        android:layout_height="100dp"
+        android:layout_gravity="top"
         android:id="@+id/trailer_key" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceLarge"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:layout_gravity="center_vertical"
         android:id="@+id/trailer_name"
+        android:layout_marginLeft="8px"
         android:paddingTop="1dp" />
 
 </LinearLayout>

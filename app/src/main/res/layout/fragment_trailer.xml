@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.linux_girl.popularmovies.TrailerFragment"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:id="@+id/trailer_main_container">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/trailer_list_view"
-        android:padding="12dp" />
+        android:padding="8dp" />
 
 </LinearLayout>

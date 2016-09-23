@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-public class CustomLayout extends RelativeLayout implements Target {
+public class CustomLayout extends LinearLayout implements Target {
 
     public CustomLayout(Context context) {
         super(context);
