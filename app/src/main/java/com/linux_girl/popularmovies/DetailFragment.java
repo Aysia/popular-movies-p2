@@ -45,17 +45,15 @@ public class DetailFragment extends Fragment {
     private TextView mRatingView;
     private FloatingActionButton mActionButton;
     public MovieObject object;
-    private CustomLayout mBackDropLayout;
+    //private CustomLayout mBackDropLayout;
 
     final static String KEY_POSITION = "position";
     int mCurrentPosition = -1;
     static String MOVIE_EXTRA = "extra";
-    static String MOVIE_PREF_ID = "movie_id";
 
     final String date_prefix = "Release Date: ";
     final String rating_suffix = "/10";
     final String rating_prefix = "User Ratings: ";
-    DetailActivity detailActivity = new DetailActivity();
 
     public DetailFragment() {
     }
@@ -72,7 +70,7 @@ public class DetailFragment extends Fragment {
         mRatingView = (TextView) rootView.findViewById(R.id.user_ratings);
 
         mActionButton = (FloatingActionButton) rootView.findViewById(R.id.fave_button);
-        mBackDropLayout = (CustomLayout) rootView.findViewById(R.id.movie_backdrop);
+        //mBackDropLayout = (CustomLayout) rootView.findViewById(R.id.movie_backdrop);
 
         Bundle arguments = getArguments();
 
@@ -122,12 +120,6 @@ public class DetailFragment extends Fragment {
         if (dbHelper.isFavorite(movie.movieId)) {
             mActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.googleGold)));
         }
-
-        //String backDropUrl = "http://image.tmdb.org/t/p/w1920/" + movie.mBackDrop;
-
-//        Picasso.with(getContext())
-//                .load(backDrop)
-//                .into(mBackDropLayout);
 
         mTitleView.setText(movie.movieTitle);
 

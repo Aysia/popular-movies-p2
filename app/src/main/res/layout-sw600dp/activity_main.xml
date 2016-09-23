@@ -27,19 +27,22 @@
             android:layout_height="wrap_content"
             android:divider="?android:attr/dividerVertical"
             android:fitsSystemWindows="true"
+            android:background="@drawable/blurred"
             android:orientation="vertical">
 
             <FrameLayout
                 android:id="@+id/detail_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:layout_margin="48dp"
                 android:divider="?android:attr/dividerVertical" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:padding="24px"
+                android:padding="24dp"
                 android:text="@string/title_trailers"
                 android:textColor="@color/colorWhite" />
 
@@ -53,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:padding="24px"
+                android:padding="24dp"
                 android:text="@string/title_reviews"
                 android:textColor="@color/colorWhite" />
 
