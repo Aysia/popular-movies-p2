@@ -12,20 +12,21 @@
         android:name="com.linux_girl.popularmovies.MainFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         tools:layout="@android:layout/list_content" />
 
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2">
+        android:layout_weight="4">
 
         <LinearLayout
             android:id="@+id/movie_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="?android:attr/dividerVertical"
+            android:fitsSystemWindows="true"
             android:orientation="vertical">
 
             <FrameLayout

@@ -8,4 +8,7 @@
     <dimen name="small_txt">13sp</dimen>
     <dimen name="detail_margin">8dp</dimen>
     <dimen name="scrollview_left">2dp</dimen>
+    <dimen name="grid_view_default">205dp</dimen>
+    <dimen name="video_min_width">205dp</dimen>
+    <dimen name="video_min_height">270dp</dimen>
 </resources>

@@ -7,10 +7,10 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:id="@+id/imageView"
-        android:paddingBottom="6dp"
-        android:minHeight="250dp"
-        android:minWidth="185dp" />
+        android:minHeight="@dimen/video_min_height"
+        android:minWidth="@dimen/video_min_width"
+        android:layout_margin="4dp" />
 
 </LinearLayout>

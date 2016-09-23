@@ -20,12 +20,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linux_girl.popularmovies.data.DatabaseContract;
 import com.linux_girl.popularmovies.data.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Field;
 
@@ -100,6 +103,7 @@ public class DetailFragment extends Fragment {
             public void onClick(View view) {
                 if(dbHelper.isFavorite(movie.movieId)) {
                     dbHelper.unFavorite(movie.movieId);
+                    EventBus.getDefault().post(new MessageEvent("Removed from Favorites"));
                 } else {
                     //TODO: Add Movie Poster Blob bitmap and backdrop
                     values.put(DatabaseContract.Favorites.FMOVIE_ID, movie.movieId);
@@ -108,6 +112,7 @@ public class DetailFragment extends Fragment {
                     values.put(DatabaseContract.Favorites.MOVIE_RATING, movie.userRating);
                     values.put(DatabaseContract.Favorites.RELEASE_DATE, movie.releaseDate);
                     dbHelper.addFavorite(values);
+                    EventBus.getDefault().post(new MessageEvent("Saved to Favorites"));
                 }
                 refreshFragment();
             }
@@ -115,7 +120,6 @@ public class DetailFragment extends Fragment {
 
         if (dbHelper.isFavorite(movie.movieId)) {
             mActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.googleGold)));
-
         }
 
         String backDropUrl = "http://image.tmdb.org/t/p/w1920/" + movie.mBackDrop;
@@ -151,6 +155,7 @@ public class DetailFragment extends Fragment {
         super.onResume();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
+
     }
 
     @Override
@@ -166,5 +171,22 @@ public class DetailFragment extends Fragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        Toast.makeText(getActivity(), event.message, Toast.LENGTH_SHORT).show();
     }
 }

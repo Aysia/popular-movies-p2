@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 
@@ -147,5 +149,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             Toast.makeText(getContext(), "No Internet Connection Available",Toast.LENGTH_LONG).show();
         }
     }
+
 
 }

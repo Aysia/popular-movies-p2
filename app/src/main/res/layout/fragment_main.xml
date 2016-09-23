@@ -6,9 +6,11 @@
     tools:context="com.linux_girl.popularmovies.MainFragment">
 
     <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/maingrid"
-        android:background="@color/colorPrimary700"
-        android:numColumns="3" />
+        android:background="@color/colorPrimary"
+        android:stretchMode="columnWidth"
+        android:columnWidth="@dimen/grid_view_default"
+        android:numColumns="auto_fit" />
 </FrameLayout>
