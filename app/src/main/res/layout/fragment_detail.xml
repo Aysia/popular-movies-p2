@@ -20,7 +20,7 @@
                 android:id="@+id/movie_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="340dp"
-                android:background="@color/colorPrimary700"
+                android:background="@drawable/blurred"
                 android:gravity="top" />
 
             <TextView

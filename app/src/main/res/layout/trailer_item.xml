@@ -17,7 +17,7 @@
         android:textAppearance="?android:textAppearanceMedium"
         android:layout_gravity="center_vertical"
         android:id="@+id/trailer_name"
-        android:layout_marginLeft="8px"
+        android:layout_marginLeft="8dp"
         android:paddingTop="1dp" />
 
 </LinearLayout>

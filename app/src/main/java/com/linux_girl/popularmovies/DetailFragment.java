@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -122,11 +123,11 @@ public class DetailFragment extends Fragment {
             mActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.googleGold)));
         }
 
-        String backDropUrl = "http://image.tmdb.org/t/p/w1920/" + movie.mBackDrop;
+        //String backDropUrl = "http://image.tmdb.org/t/p/w1920/" + movie.mBackDrop;
 
-        Picasso.with(getContext())
-                .load(backDropUrl)
-                .into(mBackDropLayout);
+//        Picasso.with(getContext())
+//                .load(backDrop)
+//                .into(mBackDropLayout);
 
         mTitleView.setText(movie.movieTitle);
 
