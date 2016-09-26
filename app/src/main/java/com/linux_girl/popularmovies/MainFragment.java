@@ -2,12 +2,12 @@ package com.linux_girl.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +16,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
+import com.linux_girl.popularmovies.data.DatabaseContract;
+import com.linux_girl.popularmovies.data.DatabaseHelper;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -127,12 +128,12 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoadFinished(Loader<Movies> loader, Movies data) {
-
+        return;
     }
 
     @Override
     public void onLoaderReset(Loader<Movies> loader) {
-
+        return;
     }
 
     public interface Callback {
@@ -144,11 +145,32 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             GetMovieTask getMovie = new GetMovieTask();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String sortOrder = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
-            getMovie.execute(sortOrder);
+            if(sortOrder.equals("favorites")) {
+                DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+                Cursor cursor = dbHelper.getFavorites(null, null);
+                cursorToList(cursor);
+                //Toast.makeText(getContext(), "Need Favorites",Toast.LENGTH_LONG).show();
+            } else {
+                getMovie.execute(sortOrder);
+            }
         } else {
             Toast.makeText(getContext(), "No Internet Connection Available",Toast.LENGTH_LONG).show();
         }
     }
 
+    public void cursorToList(Cursor cursor) {
+        ArrayList<Movies> movies = new ArrayList<>();
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            String movieId = cursor.getString(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_ID));
+            String movieTitle = cursor.getString(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_TITLE));
+            String moviePlot = cursor.getString(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_PLOT));
+            String userRating = cursor.getString(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_RATING));
+            String releaseDate = cursor.getString(cursor.getColumnIndex(DatabaseContract.Favorites.RELEASE_DATE));
 
+            movies.add(new Movies(movieId,movieTitle, moviePlot, userRating, releaseDate,"null","null")); //add the item
+            cursor.moveToNext();
+        }
+        setMovieAdapter(movies);
+    }
 }

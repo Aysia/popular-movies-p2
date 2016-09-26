@@ -1,18 +1,23 @@
 package com.linux_girl.popularmovies;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.linux_girl.popularmovies.data.DatabaseContract;
+import com.linux_girl.popularmovies.data.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class MovieAdapter extends ArrayAdapter<Movies> {
     private boolean mCurrentMovie = true;
+    DatabaseHelper dbHelper = new DatabaseHelper(getContext());
 
     /**
      * Create a new {@link MovieAdapter} object.
@@ -36,13 +41,18 @@ public class MovieAdapter extends ArrayAdapter<Movies> {
         // Find the ImageView
         ImageView imageView = (ImageView) listMoviesView.findViewById(R.id.imageView);
 
-        String imageUri = "http://image.tmdb.org/t/p/w185/" + currentMovie.getImageUrl();
-        Picasso.with(getContext())
-                .load(imageUri)
-                .into(imageView);
+        // in Favorites display the image without picasso
+        if(currentMovie.getImageUrl() == "null") {
+            String movieId = currentMovie.getMovieId();
+            byte[] blob = dbHelper.getPosterCover(movieId);
+            imageView.setImageBitmap(Utility.getImage(blob));
+        } else {
+            String imageUri = "http://image.tmdb.org/t/p/w185/" + currentMovie.getImageUrl();
+            Picasso.with(getContext())
+                    .load(imageUri)
+                    .into(imageView);
+        }
 
-        // Return the whole book item layout (containing 2 TextViews) so that it can be shown in
-        // the ListView.
         return listMoviesView;
     }
     public void setCurrentMovie(boolean useCurrentMovie) {

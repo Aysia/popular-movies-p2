@@ -7,6 +7,8 @@
     <string name="settings_popular_title">Most Popular</string>
     <string name="settings_rated_options">top_rated</string>
     <string name="settings_rated_title">Highest Rated</string>
+    <string name="settings_favorites_title">Favorites</string>
+    <string name="settings_favorites_options">favorites</string>
 
     <!-- Menu Strings -->
     <string name="action_settings">Settings</string>

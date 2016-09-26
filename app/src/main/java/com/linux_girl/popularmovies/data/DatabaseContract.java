@@ -1,6 +1,5 @@
 package com.linux_girl.popularmovies.data;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 import static java.sql.Types.BLOB;
@@ -30,7 +29,7 @@ public class DatabaseContract {
         public static final String TABLE_NAME = "FavoritesTable";
 
         // Table constants for Favorites
-        public static final String FMOVIE_ID = "movieId";
+        public static final String MOVIE_ID = "movieId";
         public static final String MOVIE_TITLE = "movie_title";
         public static final String MOVIE_POSTER = "movie_poster";
         public static final String MOVIE_PLOT = "synopsis";
@@ -41,7 +40,7 @@ public class DatabaseContract {
         public static final String CREATE_FAVORITES_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY, " +
-                FMOVIE_ID + TEXT_TYPE +  COMMA_SEP +
+                MOVIE_ID + TEXT_TYPE +  COMMA_SEP +
                 MOVIE_TITLE + TEXT_TYPE + COMMA_SEP +
                 MOVIE_POSTER + BLOB_TYPE + COMMA_SEP +
                 MOVIE_PLOT + TEXT_TYPE + COMMA_SEP +

@@ -1,25 +1,16 @@
 package com.linux_girl.popularmovies;
 
-import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +24,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Field;
 
+import static com.linux_girl.popularmovies.R.id.imageView;
+
 public class DetailFragment extends Fragment {
 
-    // Tag for Logs
     String LOG_TAG = DetailFragment.class.getSimpleName();
 
     private TextView mTitleView;
@@ -45,7 +37,6 @@ public class DetailFragment extends Fragment {
     private TextView mRatingView;
     private FloatingActionButton mActionButton;
     public MovieObject object;
-    //private CustomLayout mBackDropLayout;
 
     final static String KEY_POSITION = "position";
     int mCurrentPosition = -1;
@@ -64,7 +55,7 @@ public class DetailFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mTitleView = (TextView) rootView.findViewById(R.id.movie_title);
-        mImageView = (ImageView) rootView.findViewById(R.id.imageView);
+        mImageView = (ImageView) rootView.findViewById(imageView);
         mPlotView = (TextView) rootView.findViewById(R.id.movie_plot);
         mDateView = (TextView) rootView.findViewById(R.id.release_date);
         mRatingView = (TextView) rootView.findViewById(R.id.user_ratings);
@@ -105,11 +96,16 @@ public class DetailFragment extends Fragment {
                     EventBus.getDefault().post(new MessageEvent("Removed from Favorites"));
                 } else {
                     //TODO: Add Movie Poster Blob bitmap and backdrop
-                    values.put(DatabaseContract.Favorites.FMOVIE_ID, movie.movieId);
+                    String uri = "http://image.tmdb.org/t/p/w185/" + movie.imageUrl;
+                    byte[] moviePoster = Utility.getBytes(uri);
+
+                    values.put(DatabaseContract.Favorites.MOVIE_ID, movie.movieId);
                     values.put(DatabaseContract.Favorites.MOVIE_TITLE, movie.movieTitle);
                     values.put(DatabaseContract.Favorites.MOVIE_PLOT, movie.moviePlot);
                     values.put(DatabaseContract.Favorites.MOVIE_RATING, movie.userRating);
                     values.put(DatabaseContract.Favorites.RELEASE_DATE, movie.releaseDate);
+                    values.put(DatabaseContract.Favorites.MOVIE_POSTER, moviePoster);
+
                     dbHelper.addFavorite(values);
                     EventBus.getDefault().post(new MessageEvent("Saved to Favorites"));
                 }
@@ -123,10 +119,23 @@ public class DetailFragment extends Fragment {
 
         mTitleView.setText(movie.movieTitle);
 
-        String imageUri = "http://image.tmdb.org/t/p/w185/" + movie.imageUrl;
-        Picasso.with(getContext())
-                .load(imageUri)
-                .into(mImageView);
+        if(movie.imageUrl == "null")
+        {
+            String movieId = movie.movieId;
+            try {
+                byte[] blob = dbHelper.getPosterCover(movieId);
+                mImageView.setImageBitmap(Utility.getImage(blob));
+            } catch (IndexOutOfBoundsException e) {
+                mImageView.setImageResource(R.drawable.placeholder);
+            }
+
+        } else {
+
+            String imageUri = "http://image.tmdb.org/t/p/w185/" + movie.imageUrl;
+            Picasso.with(getContext())
+                    .load(imageUri)
+                    .into(mImageView);
+        }
 
         mPlotView.setText(movie.moviePlot);
         String release_date = date_prefix + movie.releaseDate;
@@ -182,4 +191,6 @@ public class DetailFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         Toast.makeText(getActivity(), event.message, Toast.LENGTH_SHORT).show();
     }
+
+
 }

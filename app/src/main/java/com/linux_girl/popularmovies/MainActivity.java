@@ -12,9 +12,14 @@ import android.view.MenuItem;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.common.android.FragmentAccessor;
+import com.facebook.stetho.inspector.protocol.module.DatabaseConstants;
+import com.linux_girl.popularmovies.data.DatabaseContract;
+import com.linux_girl.popularmovies.data.DatabaseHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import static com.linux_girl.popularmovies.data.DatabaseContract.Favorites.DELETE_TABLE;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.Callback {
 
@@ -24,6 +29,10 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
     public String TRAILERFRAGMENT_TAG = "TFTAG";
     public String REVIEWFRAGMENT_TAG = "RFTAG";
 
+
+    // DROP TABLE FOR DEBUGGING
+    DatabaseHelper dbHelper = new DatabaseHelper(this);
+
     // newest file
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
         //initialize Stetho to view preferences and database
         Stetho.initializeWithDefaults(this);
         setContentView(R.layout.activity_main);
+
+        //uncomment to delete tables
+        //dbHelper.deleteTablesData();
 
         if (android.os.Build.VERSION.SDK_INT > 9)
         {

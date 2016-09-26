@@ -5,7 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.facebook.stetho.common.Util;
+import com.linux_girl.popularmovies.Utility;
+
+import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -47,10 +52,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         String[] projection = {
-                DatabaseContract.Favorites.FMOVIE_ID,
+                DatabaseContract.Favorites.MOVIE_ID,
         };
         // Define 'where' part of query.
-        String selection = DatabaseContract.Favorites.FMOVIE_ID + " LIKE ?";
+        String selection = DatabaseContract.Favorites.MOVIE_ID + " LIKE ?";
         // Specify arguments in placeholder order.
         String[] selectionArgs = {movie_id};
 
@@ -71,17 +76,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return true;
     }
+    public byte[] getPosterCover(String movieId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] columns = { DatabaseContract.Favorites.MOVIE_POSTER };
+        String selection = DatabaseContract.Favorites.MOVIE_ID + "=?";
+        String[] selectionArgs = { movieId };
+        Cursor cursor = db.query(
+                DatabaseContract.Favorites.TABLE_NAME, columns, selection, selectionArgs, null, null, null
+        );
+        cursor.moveToFirst();
+        byte[] blob = cursor.getBlob(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_POSTER));
+
+        Log.i("ma", "BLOB: " + blob.toString());
+        return blob ;
+    }
     public Cursor getFavorites(String selection, String[] selectionArgs) {
         SQLiteDatabase db = getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
         String[] projection = {
-                DatabaseContract.Favorites.FMOVIE_ID,
+                DatabaseContract.Favorites.MOVIE_ID,
+                DatabaseContract.Favorites.MOVIE_TITLE,
+                DatabaseContract.Favorites.MOVIE_POSTER,
+                DatabaseContract.Favorites.MOVIE_RATING,
+                DatabaseContract.Favorites.RELEASE_DATE,
+                DatabaseContract.Favorites.MOVIE_PLOT
         };
 
         // How you want the results sorted in the resulting Cursor
         String sortOrder = DatabaseContract.Favorites._ID + " ASC";
+
 
         Cursor cursor = db.query(
                 DatabaseContract.Favorites.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder
@@ -93,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void unFavorite(String movie_id) {
         SQLiteDatabase db = getWritableDatabase();
         // Define 'where' part of query.
-        String selection = DatabaseContract.Favorites.FMOVIE_ID + " LIKE ?";
+        String selection = DatabaseContract.Favorites.MOVIE_ID + " LIKE ?";
         // Specify arguments in placeholder order.
         String[] selectionArgs = { movie_id};
         // Issue SQL statement.
