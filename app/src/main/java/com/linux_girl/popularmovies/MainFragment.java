@@ -3,6 +3,7 @@ package com.linux_girl.popularmovies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     private static final String SELECTED_KEY = "selected_position";
     private static final int MOVIE_LOADER = 0;
     public Movies currentMovie;
+    ArrayList<Movies> movies;
 
     public MainFragment() {
     }

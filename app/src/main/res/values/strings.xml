@@ -25,7 +25,8 @@
 
     <string name="favorite_default">false</string>
 
-    <string name="empty_view_text">Please Select a Movie to begin</string>
+    <string name="splash_title">Welcome to Popular Movies</string>
+    <string name="splash_body">Please select a movie to begin!</string>
     <string name="empty_trailer_text">No Trailers Found</string>
     <string name="empty_review_text">No Reviews Found</string>
 

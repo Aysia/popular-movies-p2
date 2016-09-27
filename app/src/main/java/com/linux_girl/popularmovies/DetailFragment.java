@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mTitleView = (TextView) rootView.findViewById(R.id.movie_title);
@@ -64,7 +66,6 @@ public class DetailFragment extends Fragment {
         mRatingView = (TextView) rootView.findViewById(R.id.user_ratings);
 
         mActionButton = (FloatingActionButton) rootView.findViewById(R.id.fave_button);
-        //mBackDropLayout = (CustomLayout) rootView.findViewById(R.id.movie_backdrop);
 
         Bundle arguments = getArguments();
 

@@ -1,4 +1,5 @@
 package com.linux_girl.popularmovies;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -15,6 +18,7 @@ import com.facebook.stetho.Stetho;
 import com.linux_girl.popularmovies.data.DatabaseHelper;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static android.view.View.GONE;
 
 
 public class MainActivity extends AppCompatActivity implements MainFragment.Callback {
@@ -29,6 +33,29 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
     // DROP TABLE FOR DEBUGGING
     DatabaseHelper dbHelper = new DatabaseHelper(this);
 
+    // Check if there is internet connectivity
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+    //create a movie object
+    public static MovieObject getMovieObject(Movies currentMovie) {
+        MovieObject obj = new MovieObject();
+        obj.movieId = currentMovie.getMovieId();
+        obj.movieTitle = currentMovie.getMovieTitle();
+        obj.moviePlot = currentMovie.getMoviePlot();
+        obj.userRating = currentMovie.getUserRating();
+        obj.releaseDate = currentMovie.getReleaseDate();
+        obj.imageUrl = currentMovie.getImageUrl();
+        obj.mBackDrop = currentMovie.getBackDrop();
+
+        return obj;
+    }
+
     // newest file
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
         //uncomment to delete tables
         //dbHelper.deleteTablesData();
 
-        if (android.os.Build.VERSION.SDK_INT > 9)
-        {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
@@ -53,13 +79,18 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
             //movie_info is available only in large screen mode
             mTwoPane = true;
 
+            SplashFragment splashFragment = new SplashFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.detail_frame, splashFragment, "SPLASH")
+                    .commit();
+
         } else {
             //Single view only - phone or small screen
             mTwoPane = false;
         }
 
         // Display MainFragment always
-        MainFragment mainFragment =  ((MainFragment) getSupportFragmentManager()
+        MainFragment mainFragment = ((MainFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_main));
         mainFragment.updateMovies();
     }
@@ -96,17 +127,22 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
     @Override
     public void onItemSelected(MovieObject object) {
         if (mTwoPane) {
+
+            FrameLayout splash = (FrameLayout) findViewById(R.id.detail_frame);
+            splash.setVisibility(GONE);
+
             Bundle args = new Bundle();
             args.putParcelable(MainFragment.MOVIE_EXTRA, object);
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(null)
                     .replace(R.id.detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
 
             Bundle arguments = new Bundle();
-            arguments.putString(TrailerFragment.MOVIE_ID,object.movieId);
+            arguments.putString(TrailerFragment.MOVIE_ID, object.movieId);
 
             TrailerFragment trailerFragment = new TrailerFragment();
             trailerFragment.setArguments(arguments);
@@ -127,28 +163,5 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
             intent.putExtra(MainFragment.MOVIE_EXTRA, object);
             startActivity(intent);
         }
-    }
-
-    // Check if there is internet connectivity
-    public static boolean isOnline(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null &&
-                cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
-    //create a movie object
-    public static MovieObject getMovieObject(Movies currentMovie) {
-        MovieObject obj = new MovieObject();
-        obj.movieId = currentMovie.getMovieId();
-        obj.movieTitle = currentMovie.getMovieTitle();
-        obj.moviePlot = currentMovie.getMoviePlot();
-        obj.userRating = currentMovie.getUserRating();
-        obj.releaseDate = currentMovie.getReleaseDate();
-        obj.imageUrl = currentMovie.getImageUrl();
-        obj.mBackDrop = currentMovie.getBackDrop();
-
-        return obj;
     }
 }
