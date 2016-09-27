@@ -16,8 +16,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class MovieAdapter extends ArrayAdapter<Movies> {
-    private boolean mCurrentMovie = true;
     DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+    Movies currentMovie;
 
     /**
      * Create a new {@link MovieAdapter} object.
@@ -36,7 +36,7 @@ public class MovieAdapter extends ArrayAdapter<Movies> {
         }
 
         // Get the {@link Movies} object located at this position in the list
-        Movies currentMovie = getItem(position);
+        currentMovie = getItem(position);
 
         // Find the ImageView
         ImageView imageView = (ImageView) listMoviesView.findViewById(R.id.imageView);
@@ -45,7 +45,9 @@ public class MovieAdapter extends ArrayAdapter<Movies> {
         if(currentMovie.getImageUrl() == "null") {
             String movieId = currentMovie.getMovieId();
             byte[] blob = dbHelper.getPosterCover(movieId);
-            imageView.setImageBitmap(Utility.getImage(blob));
+            if(blob != null) {
+                imageView.setImageBitmap(Utility.getImage(blob));
+            }
         } else {
             String imageUri = "http://image.tmdb.org/t/p/w185/" + currentMovie.getImageUrl();
             Picasso.with(getContext())
@@ -54,9 +56,6 @@ public class MovieAdapter extends ArrayAdapter<Movies> {
         }
 
         return listMoviesView;
-    }
-    public void setCurrentMovie(boolean useCurrentMovie) {
-        mCurrentMovie = useCurrentMovie;
     }
 
     @Override

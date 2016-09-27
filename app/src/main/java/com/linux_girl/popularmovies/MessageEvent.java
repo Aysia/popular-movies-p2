@@ -7,4 +7,12 @@ public class MessageEvent {
     public MessageEvent(String message) {
         this.message = message;
     }
+
+    public class MessageObject {
+        public final MovieObject object;
+
+        public MessageObject(MovieObject object) {
+            this.object = object;
+        }
+    }
 }

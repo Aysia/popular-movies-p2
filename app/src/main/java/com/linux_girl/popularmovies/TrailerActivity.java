@@ -15,24 +15,18 @@ public class TrailerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trailer);
 
-        //display DetailFragment
         if (savedInstanceState == null) {
 
-            Bundle args = new Bundle();
-            args.putParcelable(TrailerFragment.MOVIE_ID, getIntent().getParcelableExtra(TrailerFragment.MOVIE_ID));
+//            Bundle args = new Bundle();
+//            args.putParcelable(TrailerFragment.MOVIE_ID, getIntent().getParcelableExtra(TrailerFragment.MOVIE_ID));
+//
+//            TrailerFragment trailerFragment = new TrailerFragment();
+//            trailerFragment.setArguments(args);
 
-            TrailerFragment trailerFragment = new TrailerFragment();
-            trailerFragment.setArguments(args);
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.trailer_main_container, trailerFragment)
-                    .commit();
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.trailer_main_container, trailerFragment)
+//                    .commit();
         }
-    }
-
-    public TrailerAdapter setTrailerAdapter(ArrayList<Trailers> trailers) {
-        TrailerAdapter trailerAdapter = new TrailerAdapter(this, trailers);
-        return trailerAdapter;
     }
 
     @Override

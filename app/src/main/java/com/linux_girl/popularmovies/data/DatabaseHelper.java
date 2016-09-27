@@ -81,14 +81,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] columns = { DatabaseContract.Favorites.MOVIE_POSTER };
         String selection = DatabaseContract.Favorites.MOVIE_ID + "=?";
         String[] selectionArgs = { movieId };
-        Cursor cursor = db.query(
-                DatabaseContract.Favorites.TABLE_NAME, columns, selection, selectionArgs, null, null, null
-        );
-        cursor.moveToFirst();
-        byte[] blob = cursor.getBlob(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_POSTER));
 
-        Log.i("ma", "BLOB: " + blob.toString());
-        return blob ;
+        try {
+            Cursor cursor = db.query(
+                    DatabaseContract.Favorites.TABLE_NAME, columns, selection, selectionArgs, null, null, null
+            );
+            cursor.moveToFirst();
+            byte[] blob = cursor.getBlob(cursor.getColumnIndex(DatabaseContract.Favorites.MOVIE_POSTER));
+            cursor.close();
+            return blob ;
+        } catch (NullPointerException e) {
+            return null;
+        }
+
     }
     public Cursor getFavorites(String selection, String[] selectionArgs) {
         SQLiteDatabase db = getReadableDatabase();
@@ -110,6 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 DatabaseContract.Favorites.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder
         );
         return cursor;
+
     }
 
     // Delete row based on MOVIE_ID

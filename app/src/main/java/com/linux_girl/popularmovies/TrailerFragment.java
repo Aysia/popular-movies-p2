@@ -5,17 +5,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static android.view.View.GONE;
+import static com.linux_girl.popularmovies.DetailActivity.TRAILERFRAMGMENT_TAG;
 import static com.linux_girl.popularmovies.MainFragment.adapter;
 
 public class TrailerFragment extends Fragment implements TrailerTask.TaskListener {
@@ -28,6 +32,7 @@ public class TrailerFragment extends Fragment implements TrailerTask.TaskListene
     static String MOVIE_ID = "extra";
 
     View rootView;
+    View mRootView;
     ListView listView;
     TrailerAdapter trailerAdapter;
 
@@ -38,8 +43,16 @@ public class TrailerFragment extends Fragment implements TrailerTask.TaskListene
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onFinished(ArrayList<Trailers> trailers) {
-        insertTrailers(trailers);
+
+        if(MainActivity.isOnline(getContext())) {
+            insertTrailers(trailers);
+        }
     }
 
     @Override
@@ -53,24 +66,16 @@ public class TrailerFragment extends Fragment implements TrailerTask.TaskListene
 
         if (arguments != null) {
             mMovieId = arguments.getString(MOVIE_ID);
-            task.execute(mMovieId);
+            if(MainActivity.isOnline(getContext()) && mMovieId != null) {
+                task.execute(mMovieId);
+            }
 
-        } else if (mCurrentPosition != -1) {
-            task.execute(mMovieId);
-        }
-
-        if (savedInstanceState != null) {
-            mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
         }
 
         return rootView;
     }
 
     public void insertTrailers(final ArrayList<Trailers> trailers) {
-
-        if(trailers == null || trailers.size() == 0) {
-            rootView.setVisibility(GONE);
-        }
 
         trailerAdapter = new TrailerAdapter(getContext(), trailers);
 

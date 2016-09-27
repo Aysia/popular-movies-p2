@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +40,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Add this line in order for this fragment to handle menu events.
-        //setHasOptionsMenu(true);
     }
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -86,6 +85,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         adapter.notifyDataSetChanged();
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -121,8 +121,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
-    public Loader<Movies> onCreateLoader(int id, Bundle args) {
-
+    public Loader<Movies> onCreateLoader(int position, Bundle args) {
         return null;
     }
 
@@ -141,20 +140,24 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     public void updateMovies() {
-        if(MainActivity.isOnline(getContext())) {
-            GetMovieTask getMovie = new GetMovieTask();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String sortOrder = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
-            if(sortOrder.equals("favorites")) {
-                DatabaseHelper dbHelper = new DatabaseHelper(getContext());
-                Cursor cursor = dbHelper.getFavorites(null, null);
-                cursorToList(cursor);
-                //Toast.makeText(getContext(), "Need Favorites",Toast.LENGTH_LONG).show();
-            } else {
-                getMovie.execute(sortOrder);
-            }
+        //First get Preference Key
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortOrder = prefs.getString(getString(R.string.pref_sort_key),
+                getString(R.string.pref_sort_default));
+
+        // If sorting == favorites always display
+        if(sortOrder.equals("favorites")) {
+            DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+            Cursor cursor = dbHelper.getFavorites(null, null);
+            cursorToList(cursor);
         } else {
-            Toast.makeText(getContext(), "No Internet Connection Available",Toast.LENGTH_LONG).show();
+            // only if there is connection display other sorting
+            if (MainActivity.isOnline(getContext())) {
+                GetMovieTask getMovie = new GetMovieTask();
+                getMovie.execute(sortOrder);
+            } else {
+                Toast.makeText(getContext(), "No Internet Connection Available", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

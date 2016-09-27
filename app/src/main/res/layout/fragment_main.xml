@@ -12,5 +12,5 @@
         android:background="@color/colorPrimary"
         android:stretchMode="columnWidth"
         android:columnWidth="@dimen/grid_view_default"
-        android:numColumns="auto_fit" />
+        android:numColumns="2" />
 </FrameLayout>

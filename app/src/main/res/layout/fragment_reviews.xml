@@ -7,14 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/review_main_container">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="@string/title_reviews"
-        android:textAllCaps="true"
-        android:textSize="@dimen/large_txt"
-        android:textColor="@color/colorPrimaryDark" />
+
 
     <ListView
         android:layout_width="match_parent"

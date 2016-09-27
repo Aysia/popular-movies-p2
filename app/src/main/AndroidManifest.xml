@@ -16,6 +16,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                    <action android:name="android.intent.action.SEND" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <data android:mimeType="image/*" />
+
             </intent-filter>
         </activity>
         <activity
@@ -35,6 +40,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.linux_girl.popularmovies.MainActivity" />
         </activity>
-    </application>
 
+
+</application>
 </manifest>

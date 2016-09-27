@@ -20,11 +20,5 @@
         android:layout_marginLeft="8dp"
         android:paddingTop="1dp" />
 
-    <TextView
-        android:id="@+id/empty_list_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/empty_trailer_tex"
-        android:visibility="gone" />
 
 </LinearLayout>

@@ -14,8 +14,8 @@ import org.greenrobot.eventbus.Subscribe;
 public class DetailActivity extends AppCompatActivity {
 
     private final String LOG_TAG = DetailActivity.class.getSimpleName();
-    public String TRAILERFRAMGMENT_TAG = "TFTAG";
-    public String REVIEWFRAGMENT_TAG = "RFTAG";
+    public static String TRAILERFRAMGMENT_TAG = "TFTAG";
+    public static String REVIEWFRAGMENT_TAG = "RFTAG";
     PagerAdapter pagerAdapter;
     ReviewFragment reviewFragment;
     TrailerFragment trailerFragment;
@@ -48,7 +48,7 @@ public class DetailActivity extends AppCompatActivity {
             trailerFragment.setArguments(trailerArgs);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.trailer_fragment, trailerFragment, TRAILERFRAMGMENT_TAG)
+                    .add(R.id.trailer_fragment, trailerFragment, TRAILERFRAMGMENT_TAG)
                     .commit();
 
             reviewFragment = new ReviewFragment();

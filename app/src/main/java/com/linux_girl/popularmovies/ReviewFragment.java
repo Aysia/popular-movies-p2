@@ -37,7 +37,9 @@ public class ReviewFragment extends Fragment implements ReviewTask.TaskListener 
 
     @Override
     public void onFinished(ArrayList<Reviews> reviews) {
-        insertReviews(reviews);
+        if(MainActivity.isOnline(getContext())) {
+            insertReviews(reviews);
+        }
     }
 
     @Override
@@ -46,18 +48,21 @@ public class ReviewFragment extends Fragment implements ReviewTask.TaskListener 
 
         rootView = inflater.inflate(R.layout.fragment_reviews, container, false);
         listView = (ListView) rootView.findViewById(R.id.reviews_listview);
-
+        listView.setEmptyView(rootView.findViewById(R.id.empty_review_list));
         Bundle arguments = getArguments();
 
         if (arguments != null) {
             // Update Details
 
             mMovieId = arguments.getString(MOVIE_ID);
-            task.execute(mMovieId);
-
+            if(MainActivity.isOnline(getContext())) {
+                task.execute(mMovieId);
+            }
         } else if (mCurrentPosition != -1) {
             // Set description based on savedInstanceState defined during onCreateView()
-            task.execute(mMovieId);
+            if(MainActivity.isOnline(getContext())) {
+                task.execute(mMovieId);
+            }
         }
 
         if (savedInstanceState != null) {
@@ -69,9 +74,6 @@ public class ReviewFragment extends Fragment implements ReviewTask.TaskListener 
 
     public void insertReviews(ArrayList<Reviews> reviews) {
 
-        if(reviews == null || reviews.size() == 0) {
-            rootView.setVisibility(GONE);
-        }
         /**
          * Create an {@link TrailerAdapter}, whose data source is a list of
          * {@link Trailers}. The adapter knows how to create list items for each

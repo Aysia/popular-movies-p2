@@ -23,6 +23,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.linux_girl.popularmovies.R.id.imageView;
 
@@ -71,14 +74,12 @@ public class DetailFragment extends Fragment {
             updateDetails(object);
 
         } else if (mCurrentPosition != -1) {
-            // Set description based on savedInstanceState defined during onCreateView()
             updateDetails(object);
         }
 
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(KEY_POSITION);
         }
-
         return rootView;
     }
 
@@ -91,11 +92,10 @@ public class DetailFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                if(dbHelper.isFavorite(movie.movieId)) {
+                if (dbHelper.isFavorite(movie.movieId)) {
                     dbHelper.unFavorite(movie.movieId);
                     EventBus.getDefault().post(new MessageEvent("Removed from Favorites"));
                 } else {
-                    //TODO: Add Movie Poster Blob bitmap and backdrop
                     String uri = "http://image.tmdb.org/t/p/w185/" + movie.imageUrl;
                     byte[] moviePoster = Utility.getBytes(uri);
 
@@ -119,8 +119,7 @@ public class DetailFragment extends Fragment {
 
         mTitleView.setText(movie.movieTitle);
 
-        if(movie.imageUrl == "null")
-        {
+        if (movie.imageUrl == "null") {
             String movieId = movie.movieId;
             try {
                 byte[] blob = dbHelper.getPosterCover(movieId);
@@ -138,7 +137,16 @@ public class DetailFragment extends Fragment {
         }
 
         mPlotView.setText(movie.moviePlot);
-        String release_date = date_prefix + movie.releaseDate;
+        String date = movie.releaseDate;
+        try {
+            SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Date oldDate = oldFormat.parse(date);
+            SimpleDateFormat newFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+            date = newFormat.format(oldDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String release_date = date_prefix + date;
         mDateView.setText(release_date);
         String formatted_ratings = rating_prefix + movie.userRating + rating_suffix;
         mRatingView.setText(formatted_ratings);
@@ -148,7 +156,6 @@ public class DetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         // Save the current description selection in case we need to recreate the fragment
         outState.putInt(KEY_POSITION, mCurrentPosition);
     }
@@ -157,7 +164,6 @@ public class DetailFragment extends Fragment {
         super.onResume();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
-
     }
 
     @Override
@@ -175,6 +181,8 @@ public class DetailFragment extends Fragment {
         }
     }
 
+
+    // Setup for EventBus to display Toast on Favorite Status
     @Override
     public void onStart() {
         super.onStart();
@@ -191,6 +199,4 @@ public class DetailFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         Toast.makeText(getActivity(), event.message, Toast.LENGTH_SHORT).show();
     }
-
-
 }

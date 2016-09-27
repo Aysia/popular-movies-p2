@@ -21,36 +21,65 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary700"
-                android:padding="12dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="12dp"
+                    android:padding="12dp"
                     android:text="@string/title_trailers"
-                    android:textAppearance="?android:textAppearanceLarge"
-                    android:textColor="@color/colorWhite" />
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/large_txt" />
+
+                <TextView
+                    android:id="@+id/empty_trailer_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/empty_trailer_text"
+                    android:visibility="gone" />
+
+                <fragment
+                    android:id="@+id/trailer_fragment"
+                    android:name="com.linux_girl.popularmovies.TrailerFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    tools:layout="@android:layout/list_content" />
             </LinearLayout>
 
-            <fragment
-                android:id="@+id/trailer_fragment"
-                android:name="com.linux_girl.popularmovies.TrailerFragment"
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                tools:layout="@android:layout/list_content" />
+                android:padding="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                android:padding="12dp">
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@string/title_reviews"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/large_txt" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/empty_review_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/empty_review_text"
+                    android:visibility="gone" />
 
             <fragment
                 android:id="@+id/review_fragment"
@@ -59,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="48dp"
                 tools:layout="@android:layout/list_content" />
-
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -1,25 +1,21 @@
 package com.linux_girl.popularmovies;
-
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.common.android.FragmentAccessor;
-import com.facebook.stetho.inspector.protocol.module.DatabaseConstants;
-import com.linux_girl.popularmovies.data.DatabaseContract;
 import com.linux_girl.popularmovies.data.DatabaseHelper;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
-import static com.linux_girl.popularmovies.data.DatabaseContract.Favorites.DELETE_TABLE;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.Callback {
 
@@ -56,28 +52,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
         if (findViewById(R.id.movie_info) != null) {
             //movie_info is available only in large screen mode
             mTwoPane = true;
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            if (savedInstanceState == null) {
-                // replace detail_container in activity_main with DetailFragment
-                // and set it's tag to DFTAG
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
-                        .commit();
-
-                // replace trailer_container in activity_main with TrailerFragment and set it's tag
-                // to TFTAG
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.trailer_container, new TrailerFragment(),TRAILERFRAGMENT_TAG)
-                        .commit();
-
-                // replace review_container an assign tag RFTAG
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.review_container, new ReviewFragment(), REVIEWFRAGMENT_TAG)
-                        .commit();
-            }
         } else {
             //Single view only - phone or small screen
             mTwoPane = false;
@@ -117,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
         super.onResume();
     }
 
-
     // Override MainFragment onItemSelected method
     @Override
     public void onItemSelected(MovieObject object) {
@@ -126,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
             args.putParcelable(MainFragment.MOVIE_EXTRA, object);
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
@@ -151,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Call
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra(MainFragment.MOVIE_EXTRA, object);
             startActivity(intent);
-
         }
     }
 
